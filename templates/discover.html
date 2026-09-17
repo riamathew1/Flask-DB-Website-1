@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<section class="discover-page">
+    <div class="section-heading">
+        <h2>DISCOVER</h2>
+    </div>
+
+    <div class="discover-layout">
+        <!-- Genre Sidebar -->
+         <aside class="genre-sidebar">
+            <h3>ALL GENRES</h3>
+
+            <a href="/discover">All Genres</a>
+
+            {% for genre in genres %}
+                <a href="/discover?genre={{ genre }}">{{ genre }}</a>
+            {% endfor %}
+        </aside>
+
+        <!-- Main Discover Content -->
+        <div class="discover-content">
+            <!-- Filters -->
+             <div class="discover-controls">
+
+                <form method="GET" action="/discover">
+                    <select name="genre">
+                        <option value="">All Genres</option>
+
+                        {%for genre in genres %}
+                        <option value="{{ genre }}"
+                            {% if request.args.get('genre') == genre %}
+                                selected
+                            {% endif %}>
+                        {{ genre }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                    <select name="sort">
+                        <option value="title">Sort By: Title</option>
+                        <option value="release_year">Sort By: Year</option>
+                        <option value="duration_minutes">Sort By: Duration</option>
+                    </select>
+
+                    <select name="order">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+
+                    <button type="submit">Apply</button>
+                </form>
+             </div>
+
+
+            <!-- Movie Grid -->
+            <div class="movie-grid">
+                {% for movie in movies %}
+                <a href="/movie/{{ movie[0] }}" class="movie-card-link">
+                    <article class="movie-card">
+                        <div class="movie-poster">Movie Image</div>
+                        <div class="movie-card-content">
+                            <h3>{{ movie[1] }}</h3>
+                            <p>{{ movie[2] }}</p>
+                            <p>{{ movie[3] }}</p>
+                            <p>star 4.5</p>
+                        </div>
+                    </article>
+                </a>
+                {% else %}
+                    <p>No movies were found.</p>
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

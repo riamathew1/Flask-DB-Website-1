@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<section class="movie-details">
+
+    <div class="movie-details-image">
+        Movie Image
+    </div>
+
+    <div class="movie-details-content">
+        <h1>{{ movie[1] }}</h1>
+
+        <div class="movie-genre">
+            <p>{{ movie[2] }}</p>
+        </div>
+
+        <div class="movie-meta">
+            <p>{{ movie[3] }}</p>
+            <p>{{ movie[9] }}</p>
+            <p>{{ movie[8] }} minutes</p>
+        </div>
+
+        <h2>Synopsis</h2>
+
+        <p>{{ movie[7] }}</p>
+
+        <h2>Details</h2>
+        <p><bold>Director:</bold> {{ movie[4] }}</p>
+        <p><bold>Producer:</bold> {{ movie[10] }}</p>
+        <p><bold>Lead Actor:</bold> {{ movie[5] }}</p>
+        <p><bold>Lead Actor:</bold> {{ movie[6] }}</p>
+    </div>
+</section>
+
+{% endblock %}

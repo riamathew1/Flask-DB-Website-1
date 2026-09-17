@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<section>
+    <div class="section-heading">
+        <h2>{{ title }}</h2>
+    </div>
+
+
+    <!-- Filter and Sort Controls -->
+     {% if show_controls %}    
+    <div class="movie-controls">
+
+        <form method="GET" action="/discover" class="filter-form">
+            <select name="genre">
+                <option value="">All Genres</option>
+                {% for genre in genres %}
+                <option value="{{ genre }}">{{ genre }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="release_year">
+                <option value="">All Years</option>
+                {% for year in years %}
+                <option value="{{ year }}">{{ year }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="age_rating">
+                <option value="">All Age Ratings</option>
+                {% for rating in age_ratings %}
+                <option value="{{ rating }}">{{ rating }}</option>
+                {% endfor %}
+            </select>
+
+            <!-- Filter Button -->
+             <input type="submit" value="Filter">
+
+        </form>
+    </div>
+
+    <div class="sorting">
+        <h3>Sort By</h3>
+
+        <a href="?sort=title&order=asc">Title A-Z</a>
+        <a href="?sort=title&order=desc">Title Z-A</a>
+        <a href="?sort=release_year&order=asc">Oldest</a>
+        <a href="?sort=release_year&order=desc">Newest</a>
+        <a href="?sort=duration_minutes&order=asc">Shortest</a>
+        <a href="?sort=duration_minutes&order=desc">Longest</a>
+    </div>
+
+    {% endif %}
+
+    <!-- Movies -->
+    <div class="movie-grid">
+        {% for movie in movies %}
+
+        <a href="/movie/{{ movie[0] }}" class="movie-card-link">
+            <article class="movie-card">
+
+                <div class="movie-poster">Movie Image</div>
+
+                <div class="movie-card-content">
+                    <h3>{{movie[1] }}</h3>
+                    <p>{{ movie[2] }}</p>
+                    <p>{{ movie[3] }}</p>
+                    <p>{{ movie[9] }}</p>
+                </div>
+
+            </article>
+
+        </a>
+
+        {% else %}
+
+        <p>No movies were found.</p>
+
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}
