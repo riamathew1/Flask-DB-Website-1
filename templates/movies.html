@@ -40,17 +40,6 @@
         </form>
     </div>
 
-    <div class="sorting">
-        <h3>Sort By</h3>
-
-        <a href="?sort=title&order=asc">Title A-Z</a>
-        <a href="?sort=title&order=desc">Title Z-A</a>
-        <a href="?sort=release_year&order=asc">Oldest</a>
-        <a href="?sort=release_year&order=desc">Newest</a>
-        <a href="?sort=duration_minutes&order=asc">Shortest</a>
-        <a href="?sort=duration_minutes&order=desc">Longest</a>
-    </div>
-
     {% endif %}
 
     <!-- Movies -->
@@ -60,7 +49,9 @@
         <a href="/movie/{{ movie[0] }}" class="movie-card-link">
             <article class="movie-card">
 
-                <div class="movie-poster">Movie Image</div>
+                <div class="movie-poster">
+                    <img src="/static/css/images/{{ movie[11] }}"/>
+                </div>
 
                 <div class="movie-card-content">
                     <h3>{{movie[1] }}</h3>

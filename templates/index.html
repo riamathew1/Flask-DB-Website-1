@@ -16,7 +16,9 @@
                 <a href="/discover" class="hero-button">EXPLORE MOVIES</a>
         </div>
 
-        <div class="hero-image">Movie Image</div>
+        <div class="hero-image">
+                <img src="/static/css/images/Sci-Fi.png"/>
+        </div>
 </section>
 
 <!-- Recommended -->
@@ -31,7 +33,9 @@
                 {% for movie in movies [:5] %}
                 <a href="/movie/{{ movie[0] }}" class="movie-card-link">
                         <article class="movie-card">
-                                <div class="movie-poster">Movie Image</div>
+                                <div class="movie-poster">
+                                        <img src="/static/css/images/{{ movie[11] }}">
+                                </div>
 
                                 <div class="movie-card-content">
                                         <h3>{{ movie[1] }}</h3>
@@ -54,8 +58,10 @@
                 {% for genre in genres %}
                 <div class="genre-item">
                         <a href="/discover?genre={{ genre }}" class="genre-card">
-                                <div class="genre-icon">Genre Icon</div>
-                                <p>{{ genre }}</p>
+                                <div class="genre-icon">
+                                        <img src="/static/css/images/{{ genre }}.png"/>
+                                </div>
+                                <!-- <p>{{ genre }}</p> -->
                         </a>
                 </div>
                 {% endfor %}

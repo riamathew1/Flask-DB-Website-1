@@ -33,7 +33,7 @@ def get_movies(genre=None, release_year=None, age_rating=None, sort="title", ord
     query = """
         SELECT movie_id, title, genre, release_year,
         director, lead_actor, lead_actress,
-        synopsis, duration_minutes, age_rating, producer
+        synopsis, duration_minutes, age_rating, producer, poster_image
         FROM movies
     """
 
@@ -60,7 +60,7 @@ def get_movies(genre=None, release_year=None, age_rating=None, sort="title", ord
     if conditions:
         query += " WHERE " + " AND ".join(conditions)
 
-    #   
+
     allowed_sorts = [
         "title",
         "genre",
@@ -260,7 +260,8 @@ def movie_details(movie_id):
             synopsis,
             duration_minutes,
             age_rating,
-            producer
+            producer,
+            poster_image
         FROM movies
         WHERE movie_id = ?
     """, (movie_id,))
@@ -306,7 +307,7 @@ def render_search():
     query = """
         SELECT movie_id, title, genre, release_year,
                director, lead_actor, lead_actress, 
-               synopsis, duration_minutes, age_rating, producer
+               synopsis, duration_minutes, age_rating, producer, poster_image
         FROM movies 
         WHERE title LIKE ? 
             OR genre LIKE ?
@@ -353,7 +354,7 @@ def discover():
     sort = request.args.get('sort', 'title')
     order = request.args.get('order', 'asc')
 
-    movies = get_movies (
+    movies = get_movies(
         genre=genre,
         release_year=release_year,
         age_rating=age_rating,

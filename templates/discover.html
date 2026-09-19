@@ -59,7 +59,9 @@
                 {% for movie in movies %}
                 <a href="/movie/{{ movie[0] }}" class="movie-card-link">
                     <article class="movie-card">
-                        <div class="movie-poster">Movie Image</div>
+                        <div class="movie-poster">
+                            <img src="/static/css/images/{{ movie[11] }}"/>
+                        </div>
                         <div class="movie-card-content">
                             <h3>{{ movie[1] }}</h3>
                             <p>{{ movie[2] }}</p>
