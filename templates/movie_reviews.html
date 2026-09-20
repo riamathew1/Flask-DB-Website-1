@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+<section class="movie-details">
+
+    <div class="movie-details-content">
+        {% for movie in movies %}
+            <h1>{{ movie[1] }}</h1>
+            <p>{{ movie[0] }}</p>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

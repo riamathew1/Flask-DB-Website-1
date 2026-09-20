@@ -250,20 +250,23 @@ def movie_details(movie_id):
     cursor = connection.cursor()
     cursor.execute("""
         SELECT 
-            movie_id,
-            title,
-            genre,
-            release_year,
-            director,
-            lead_actor,
-            lead_actress,
-            synopsis,
-            duration_minutes,
-            age_rating,
-            producer,
-            poster_image
-        FROM movies
-        WHERE movie_id = ?
+            m.movie_id,
+            m.title,
+            m.genre,
+            m.release_year,
+            m.director,
+            m.lead_actor,
+            m.lead_actress,
+            m.synopsis,
+            m.duration_minutes,
+            m.age_rating,
+            m.producer,
+            m.poster_image,
+            md.cast_crew
+        FROM movies m
+        LEFT JOIN movie_details md 
+            ON m.movie_id = md.movie_id
+        WHERE m.movie_id =?
     """, (movie_id,))
 
     movie = cursor.fetchone()
@@ -373,6 +376,34 @@ def discover():
         order=order,
         show_controls=True
     )
+
+
+@app.route('/reviews')
+def reviews():
+    connection = create_connection(DATABASE)
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT 
+            mr.movie_reviews,
+            m.title
+            FROM movies m
+            LEFT JOIN movie_reviews mr 
+                ON m.movie_id = mr.movie_id
+    """)
+
+    movies = cursor.fetchall()
+
+    connection.close()
+
+    if movies is None:
+        return "Movie not found.", 404
+    print(movies)
+
+    return render_template(
+        'movie_reviews.html',
+        movies=movies
+    )
+
 
 if __name__ == "__main__":
     app.run()
