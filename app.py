@@ -33,7 +33,7 @@ def get_movies(genre=None, release_year=None, age_rating=None, sort="title", ord
     query = """
         SELECT movie_id, title, genre, release_year,
         director, lead_actor, lead_actress,
-        synopsis, duration_minutes, age_rating, producer, poster_image
+        synopsis, duration_minutes, age_rating, producer, poster_image, display_priority
         FROM movies
     """
 
@@ -62,6 +62,7 @@ def get_movies(genre=None, release_year=None, age_rating=None, sort="title", ord
 
 
     allowed_sorts = [
+        "display_priority",
         "title",
         "genre",
         "release_year",
@@ -159,7 +160,7 @@ def render_home():
     age_rating = request.args.get('age_rating', '')
 
     # Get sorting values from the URL 
-    sort = request.args.get('sort', 'title')
+    sort = request.args.get('sort', 'display_priority')
     order = request.args.get('order', 'asc')
 
     # Get movies
@@ -250,23 +251,21 @@ def movie_details(movie_id):
     cursor = connection.cursor()
     cursor.execute("""
         SELECT 
-            m.movie_id,
-            m.title,
-            m.genre,
-            m.release_year,
-            m.director,
-            m.lead_actor,
-            m.lead_actress,
-            m.synopsis,
-            m.duration_minutes,
-            m.age_rating,
-            m.producer,
-            m.poster_image,
-            md.cast_crew
-        FROM movies m
-        LEFT JOIN movie_details md 
-            ON m.movie_id = md.movie_id
-        WHERE m.movie_id =?
+            movie_id,
+            title,
+            genre,
+            release_year,
+            director,
+            lead_actor,
+            lead_actress,
+            synopsis,
+            duration_minutes,
+            age_rating,
+            producer,
+            poster_image,
+            cast_crew
+        FROM movies
+        WHERE movie_id =?
     """, (movie_id,))
 
     movie = cursor.fetchone()
@@ -385,7 +384,9 @@ def reviews():
     cursor.execute("""
         SELECT 
             mr.movie_reviews,
-            m.title
+            m.title,
+            m.movie_id,
+            m.poster_image
             FROM movies m
             LEFT JOIN movie_reviews mr 
                 ON m.movie_id = mr.movie_id

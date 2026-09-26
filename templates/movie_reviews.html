@@ -2,12 +2,26 @@
 
 {% block main %}
 
-<section class="movie-details">
-
-    <div class="movie-details-content">
+<section>
+    <!-- Movie Grid -->
+    <div class="movie-grid">
         {% for movie in movies %}
-            <h1>{{ movie[1] }}</h1>
-            <p>{{ movie[0] }}</p>
+        <a href="/movie/{{ movie[2] }}" class="movie-card-link">
+            <article class="movie-card">
+                <div class="movie-poster">
+                    <img src="/static/css/images/{{ movie[3] }}"/>
+                </div>
+                <div class="movie-details-content">
+                    <h3>{{ movie[1] }}</h3>
+
+                    <div class="movie-meta">
+                        <p>{{ movie[0] }}</p>
+                    </div>
+                </div>
+            </article>
+        </a>
+        {% else %}
+            <p>No movies were found.</p>
         {% endfor %}
     </div>
 </section>

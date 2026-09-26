@@ -23,36 +23,43 @@
         <div class="discover-content">
             <!-- Filters -->
              <div class="discover-controls">
-
+                {% if request.args.get('genre') %}
+                    <b>{{ request.args.get('genre') }}</b>
+                {% else %}
+                    <b>ALL GENRES</b>
+                {% endif %}
+                <p> </p>
                 <form method="GET" action="/discover">
-                    <select name="genre">
-                        <option value="">All Genres</option>
-
-                        {%for genre in genres %}
-                        <option value="{{ genre }}"
-                            {% if request.args.get('genre') == genre %}
-                                selected
-                            {% endif %}>
-                        {{ genre }}
-                        </option>
-                        {% endfor %}
-                    </select>
-
+                    
                     <select name="sort">
-                        <option value="title">Sort By: Title</option>
-                        <option value="release_year">Sort By: Year</option>
-                        <option value="duration_minutes">Sort By: Duration</option>
+                        <option value="title"
+                        {% if request.args.get('sort') == 'title' %}
+                                selected
+                            {% endif %}>Sort By: Title</option>
+                        <option value="release_year"
+                        {% if request.args.get('sort') == 'release_year' %}
+                                selected
+                            {% endif %}>Sort By: Year</option>
+                        <option value="duration_minutes"
+                        {% if request.args.get('sort') == 'duration_minutes' %}
+                                selected
+                            {% endif %}>Sort By: Duration</option>
                     </select>
 
                     <select name="order">
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
+                        <option value="asc"
+                        {% if request.args.get('order') == 'asc' %}
+                                selected
+                            {% endif %}>Ascending</option>
+                        <option value="desc"
+                        {% if request.args.get('order') == 'desc' %}
+                                selected
+                            {% endif %}>Descending</option>
                     </select>
 
                     <button type="submit">Apply</button>
                 </form>
              </div>
-
 
             <!-- Movie Grid -->
             <div class="movie-grid">
@@ -62,11 +69,13 @@
                         <div class="movie-poster">
                             <img src="/static/css/images/{{ movie[11] }}"/>
                         </div>
-                        <div class="movie-card-content">
+                        <div class="movie-details-content">
                             <h3>{{ movie[1] }}</h3>
-                            <p>{{ movie[2] }}</p>
-                            <p>{{ movie[3] }}</p>
-                            <p>star 4.5</p>
+
+                            <div class="movie-meta">
+                                <p>{{ movie[2] }}</p>
+                                <p>{{ movie[3] }}</p>
+                                <p>star 4.5</p>
                         </div>
                     </article>
                 </a>

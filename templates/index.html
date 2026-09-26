@@ -4,20 +4,18 @@
 <!-- Featured Banner -->
 <section class="hero">
         <div class="hero-content">
-                <h2>
+                <h2 class="hero-header">
                         Find Your<br>
                         Next Film.
                 </h2>
 
-                <p>
-                        Curated recommendations, classic favourites, and hidden gems.
+                <p class="hero-text">
+                        Explore top picks, hidden gems, and timeless classics tailored to your taste.
                 </p>
-
-                <a href="/discover" class="hero-button">EXPLORE MOVIES</a>
         </div>
 
         <div class="hero-image">
-                <img src="/static/css/images/Sci-Fi.png"/>
+                <img src="/static/css/images/hero_image.png"/>
         </div>
 </section>
 
@@ -29,22 +27,29 @@
                 <a href="/discover" class="view-all">VIEW ALL</a>
         </div>
 
-        <div class="movie-grid">
-                {% for movie in movies [:5] %}
-                <a href="/movie/{{ movie[0] }}" class="movie-card-link">
-                        <article class="movie-card">
-                                <div class="movie-poster">
-                                        <img src="/static/css/images/{{ movie[11] }}">
-                                </div>
+        <div class="slider-wrapper">
+                <button class="slider-arrow arrow-left" aria-label="Previous">&lt;</button>
+                <button class="slider-arrow arrow-right" aria-label="Next">&gt;</button>
+                <!-- Horizontal Slider Container -->
+                <div class="movie-slider">
+                        {% for movie in movies[:10] %}
+                        <div class="movie-card-wrapper" id="card-{{ loop.index0 }}">
+                                <a href="/movie/{{ movie[0] }}" class="movie-card-link">
+                                        <article class="movie-card">
+                                                <div class="movie-poster">
+                                                        <img src="/static/css/images/{{ movie[11] }}" alt="{{ movie[1] }} poster">
+                                                </div>
 
-                                <div class="movie-card-content">
-                                        <h3>{{ movie[1] }}</h3>
-                                        <p>{{ movie[2] }}</p>
-                                        <p>4.5 stars</p>
-                                </div>
-                        </article>
-                </a>
-                {% endfor %}
+                                                <div class="movie-card-content">
+                                                        <h3>{{ movie[1] }}</h3>
+                                                        <p>{{ movie[2] }}</p>
+                                                        <p>4.5 stars</p>
+                                                </div>
+                                        </article>
+                                </a>
+                        </div>
+                        {% endfor %}
+                </div>
         </div>
 </section>
 
@@ -61,7 +66,6 @@
                                 <div class="genre-icon">
                                         <img src="/static/css/images/{{ genre }}.png"/>
                                 </div>
-                                <!-- <p>{{ genre }}</p> -->
                         </a>
                 </div>
                 {% endfor %}
@@ -70,6 +74,10 @@
 
 <!-- Movie Finder -->
 <section class="movie-finder">
+        <div class="finder-image">
+                <img src="/static/css/images/movie_finder.png">
+        </div>
+
         <div>
                 <h2>CAN'T DECIDE<br>WHAT TO WATCH?</h2>
                 <p>
@@ -77,10 +85,6 @@
                 </p>
 
                 <a href="/discover" class="hero-button">FIND YOUR NEXT FILM.</a>
-        </div>
-
-        <div class="finder-image">
-                Film Image
         </div>
 </section>
 

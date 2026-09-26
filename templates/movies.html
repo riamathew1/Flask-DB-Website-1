@@ -50,14 +50,18 @@
             <article class="movie-card">
 
                 <div class="movie-poster">
-                    <img src="/static/css/images/{{ movie[11] }}"/>
+                    <img src="/static/css/images/{{ movie[11] }}" alt="{{ movie[1] }} Poster"/>
                 </div>
 
                 <div class="movie-card-content">
                     <h3>{{movie[1] }}</h3>
-                    <p>{{ movie[2] }}</p>
-                    <p>{{ movie[3] }}</p>
-                    <p>{{ movie[9] }}</p>
+
+                    <div class="movie-subinfo">
+                        <span>{{ movie[2]|striptags }}</span>
+                        <span>{{ movie[3]|striptags }}</span>
+                        <span>{{ movie[9]|striptags }}</span>
+                    </div>
+
                 </div>
 
             </article>
