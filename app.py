@@ -31,10 +31,24 @@ def get_movies(genre=None, release_year=None, age_rating=None, sort="title", ord
 
     # Base SQL query selecting all necessary movie features
     query = """
-        SELECT movie_id, title, genre, release_year,
-        director, lead_actor, lead_actress,
-        synopsis, duration_minutes, age_rating, producer, poster_image, display_priority
-        FROM movies
+        SELECT 
+            m.movie_id,
+            m.title,
+            m.genre,
+            m.release_year,
+            m.director,
+            m.lead_actor,
+            m.lead_actress,
+            m.synopsis,
+            m.duration_minutes,
+            m.age_rating,
+            m.producer,
+            m.poster_image,
+            m.display_priority,
+            mr.imdb_rating
+        FROM movies m
+        LEFT JOIN movie_reviews mr 
+            ON m.movie_id = mr.movie_id
     """
 
     # Track filtering conditions and their parameter values
@@ -383,7 +397,8 @@ def reviews():
     cursor = connection.cursor()
     cursor.execute("""
         SELECT 
-            mr.movie_reviews,
+            mr.review_content,
+            mr.imdb_rating,
             m.title,
             m.movie_id,
             m.poster_image
@@ -398,13 +413,15 @@ def reviews():
 
     if movies is None:
         return "Movie not found.", 404
-    print(movies)
 
     return render_template(
         'movie_reviews.html',
         movies=movies
     )
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == "__main__":
     app.run()
