@@ -4,7 +4,7 @@
 
 <section class="discover-page">
     <div class="section-heading">
-        <h2>DISCOVER</h2>
+        <h2>{{ title }}</h2>
     </div>
 
     <div class="discover-layout">
@@ -30,7 +30,7 @@
                 {% endif %}
                 <p> </p>
                 <form method="GET" action="/discover">
-                    
+                    <input type="hidden" name="genre" value="{{ request.args.get('genre', '') }}">
                     <select name="sort">
                         <option value="title"
                         {% if request.args.get('sort') == 'title' %}
@@ -75,7 +75,7 @@
                             <div class="movie-meta">
                                 <p>{{ movie[2] }}</p>
                                 <p>{{ movie[3] }}</p>
-                                <p>&#11088;&nbsp;{{ movie[13] }}/10</p>
+                                <p>{{ movie[8] }}&nbsp;mins</p>
                         </div>
                     </article>
                 </a>

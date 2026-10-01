@@ -1,4 +1,10 @@
-from flask import Flask, render_template, request
+# Controller App Script for & ACTION movie website using Flask, Django and Python
+# This also handles all the routing for all the URLs to this website.
+# Author: Ria Mathew
+# Date: September 2026
+
+from flask import Flask, render_template, request # type: ignore
+# Imports SQLite library to handle the DB queries 
 import sqlite3
 from sqlite3 import Error
 
@@ -22,7 +28,7 @@ def create_connection(db_file):
     return None
 
 
-def get_movies(genre=None, release_year=None, age_rating=None, sort="title", order="asc"):
+def get_movies(genre=None, release_year=None, sort="title", order="asc"):
     """
     Retrieves movies from the database based on optional filters and sorting.
     """
@@ -65,16 +71,11 @@ def get_movies(genre=None, release_year=None, age_rating=None, sort="title", ord
         conditions.append("release_year = ?")
         params.append(release_year)
 
-    # Filter by release year
-    if age_rating:
-        conditions.append("age_rating = ?")
-        params.append(age_rating)
-
     # Append WHERE clause to query if any filter conditions exist
     if conditions:
         query += " WHERE " + " AND ".join(conditions)
 
-
+    # List of DB fields that can be sorted
     allowed_sorts = [
         "display_priority",
         "title",
@@ -83,15 +84,18 @@ def get_movies(genre=None, release_year=None, age_rating=None, sort="title", ord
         "duration_minutes"
     ]
 
+    # If no fields are selected for sorting, use title as default value
     if sort not in allowed_sorts:
         sort = "title"
 
+    # Set default sort order
     if order not in ["asc", "desc"]:
         order = "asc"
 
+    # Append ORDER BY clause to query if any sort conditions exist
     query += " ORDER BY " + sort + " " + order
 
-    # Query the DATABASE
+    # Query the DB, fetch all matching records and return them
     cur.execute(query, params)
     movies = cur.fetchall()
     con.close()
@@ -104,61 +108,18 @@ def get_genres():
     """
     con = create_connection(DATABASE)
     cur = con.cursor()
-
     query = """
         SELECT DISTINCT genre
         FROM movies
         ORDER BY genre ASC
     """
-
     cur.execute(query)
+    # For every record returned from the database, take its first value.
+    # Put this value into a list called genres.
     genres = [record[0] for record in cur.fetchall()]
-
     con.close()
 
     return genres
-
-
-def get_years():
-    """
-    Gets all the unique release years from the movies table.
-    """
-    con = create_connection(DATABASE)
-    cur = con.cursor()
-
-    query = """
-        SELECT DISTINCT release_year
-        FROM movies
-        ORDER BY release_year DESC
-    """
-
-    cur.execute(query)
-    years = [record[0] for record in cur.fetchall()]
-
-    con.close()
-
-    return years
-
-
-def get_age_ratings():
-    """
-    Gets all the unique age ratings from the movies table.
-    """
-    con = create_connection(DATABASE)
-    cur = con.cursor()
-
-    query = """
-        SELECT DISTINCT age_rating
-        FROM movies
-        ORDER BY age_rating ASC
-    """
-
-    cur.execute(query)
-    age_ratings = [record[0] for record in cur.fetchall()]
-
-    con.close()
-
-    return age_ratings
 
 
 @app.route('/')
@@ -171,33 +132,27 @@ def render_home():
     # Get filter values from the URL
     genre = request.args.get('genre', '')
     release_year = request.args.get('release_year', '')
-    age_rating = request.args.get('age_rating', '')
 
     # Get sorting values from the URL 
     sort = request.args.get('sort', 'display_priority')
     order = request.args.get('order', 'asc')
 
-    # Get movies
+    # Get filtered and sorted movies
     movies = get_movies(
         genre=genre,
         release_year=release_year,
-        age_rating=age_rating,
         sort=sort,
         order=order
     )
 
-    # Get filter options
+    # Get available genres for the filter
     genres = get_genres()
-    years = get_years()
-    age_ratings = get_age_ratings()
 
+    # Return the data to the homepage
     return render_template(
         "index.html",
         movies=movies, 
         genres=genres,
-        years=years,
-        age_ratings=age_ratings,
-        title="Movies",
         sort=sort,
         order=order,
         show_controls=True
@@ -210,21 +165,22 @@ def render_webpage(genre):
     Displays movies a part of the same genre.
     """
 
+    # Get sorting values from URL
     sort = request.args.get('sort', 'title')
     order = request.args.get('order', 'asc')
 
+    # Get movies from the selected genre
     movies = get_movies(
         genre=genre,
         sort=sort,
         order=order
     )
 
+    # Send the movies and page information to the template
     return render_template(
         "movies.html",
         movies=movies,
         genres=get_genres(),
-        years=get_years(),
-        age_ratings=get_age_ratings(),
         title=genre,
         sort=sort,
         order=order,
@@ -251,14 +207,12 @@ def render_sortpage(genre):
         "movies.html",
         movies=movies,
         genres=get_genres(),
-        years=get_years(),
-        age_ratings=get_age_ratings(),
         title=genre,
         sort=sort,
         order=order
     )
 
-# AI USED
+
 @app.route('/movie/<int:movie_id>')
 def movie_details(movie_id):
     connection = create_connection(DATABASE)
@@ -309,8 +263,6 @@ def render_search():
             "movies.html",
             movies=[],
             genres=get_genres(),
-            years=get_years(),
-            age_ratings=get_age_ratings(),
             title="Search",
             sort="title",
             order="asc",
@@ -321,17 +273,30 @@ def render_search():
     search_value = "%" + search + "%"
     
     query = """
-        SELECT movie_id, title, genre, release_year,
-               director, lead_actor, lead_actress, 
-               synopsis, duration_minutes, age_rating, producer, poster_image
-        FROM movies 
-        WHERE title LIKE ? 
-            OR genre LIKE ?
-            OR director LIKE ?
-            OR lead_actor LIKE ?
-            OR lead_actress LIKE ?
-            OR synopsis LIKE ?
-        ORDER BY title ASC
+        SELECT 
+            m.movie_id,
+            m.title,
+            m.genre, 
+            m.release_year,
+            m.director, 
+            m.lead_actor, 
+            m.lead_actress, 
+            m.synopsis,
+            m.duration_minutes, 
+            m.age_rating, 
+            m.producer, 
+            m.poster_image,
+            mr.imdb_rating
+        FROM movies m
+        LEFT JOIN movie_reviews mr
+            ON m.movie_id = mr.movie_id
+        WHERE m.title LIKE ? 
+            OR m.genre LIKE ?
+            OR m.director LIKE ?
+            OR m.lead_actor LIKE ?
+            OR m.lead_actress LIKE ?
+            OR m.synopsis LIKE ?
+        ORDER BY m.title ASC
     """
 
     params = (
@@ -353,8 +318,6 @@ def render_search():
         "movies.html",
         movies=movies,
         genres=get_genres(),
-        years=get_years(),
-        age_ratings=get_age_ratings(),
         title = "Search results for: " + search,
         sort="title",
         order="asc",
@@ -365,7 +328,6 @@ def render_search():
 def discover():
     genre = request.args.get('genre', '')
     release_year = request.args.get('release_year', '')
-    age_rating = request.args.get('age_rating', '')
 
     sort = request.args.get('sort', 'title')
     order = request.args.get('order', 'asc')
@@ -373,7 +335,6 @@ def discover():
     movies = get_movies(
         genre=genre,
         release_year=release_year,
-        age_rating=age_rating,
         sort=sort,
         order=order
     )
@@ -382,9 +343,7 @@ def discover():
         'discover.html',
         movies=movies,
         genres=get_genres(),
-        years=get_years(),
-        age_ratings=get_age_ratings(),
-        title="Discover",
+        title="DISCOVER",
         sort=sort,
         order=order,
         show_controls=True
