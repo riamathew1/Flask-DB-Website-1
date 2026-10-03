@@ -1,10 +1,10 @@
-# Controller App Script for & ACTION movie website using Flask, Django and Python
+# Controller App Script for & ACTION movie website using Flask and Python
 # This also handles all the routing for all the URLs to this website.
 # Author: Ria Mathew
 # Date: September 2026
 
 from flask import Flask, render_template, request # type: ignore
-# Imports SQLite library to handle the DB queries 
+# Imports SQLite library to handle the database queries 
 import sqlite3
 from sqlite3 import Error
 
@@ -33,73 +33,77 @@ def get_movies(genre=None, release_year=None, sort="title", order="asc"):
     Retrieves movies from the database based on optional filters and sorting.
     """
     con = create_connection(DATABASE)
-    cur = con.cursor()
 
-    # Base SQL query selecting all necessary movie features
-    query = """
-        SELECT 
-            m.movie_id,
-            m.title,
-            m.genre,
-            m.release_year,
-            m.director,
-            m.lead_actor,
-            m.lead_actress,
-            m.synopsis,
-            m.duration_minutes,
-            m.age_rating,
-            m.producer,
-            m.poster_image,
-            m.display_priority,
-            mr.imdb_rating
-        FROM movies m
-        LEFT JOIN movie_reviews mr 
-            ON m.movie_id = mr.movie_id
-    """
+    try:
+        cur = con.cursor()
 
-    # Track filtering conditions and their parameter values
-    conditions = []
-    params = []
+        # Base SQL query selecting all necessary movie features
+        query = """
+            SELECT 
+                m.movie_id,
+                m.title,
+                m.genre,
+                m.release_year,
+                m.director,
+                m.lead_actor,
+                m.lead_actress,
+                m.synopsis,
+                m.duration_minutes,
+                m.age_rating,
+                m.producer,
+                m.poster_image,
+                m.display_priority,
+                mr.imdb_rating
+            FROM movies m
+            LEFT JOIN movie_reviews mr 
+                ON m.movie_id = mr.movie_id
+        """
 
-    # Filter by genre
-    if genre:
-        conditions.append("genre = ?")
-        params.append(genre)
+        # Track filtering conditions and their parameter values
+        conditions = []
+        params = []
 
-    # Filter by release year
-    if release_year:
-        conditions.append("release_year = ?")
-        params.append(release_year)
+        # Filter by genre
+        if genre:
+            conditions.append("genre = ?")
+            params.append(genre)
 
-    # Append WHERE clause to query if any filter conditions exist
-    if conditions:
-        query += " WHERE " + " AND ".join(conditions)
+        # Filter by release year
+        if release_year:
+            conditions.append("release_year = ?")
+            params.append(release_year)
 
-    # List of DB fields that can be sorted
-    allowed_sorts = [
-        "display_priority",
-        "title",
-        "genre",
-        "release_year",
-        "duration_minutes"
-    ]
+        # Append WHERE clause to query if any filter conditions exist
+        if conditions:
+            query += " WHERE " + " AND ".join(conditions)
 
-    # If no fields are selected for sorting, use title as default value
-    if sort not in allowed_sorts:
-        sort = "title"
+        # List of database fields that can be sorted
+        allowed_sorts = [
+            "display_priority",
+            "title",
+            "genre",
+            "release_year",
+            "duration_minutes"
+        ]
 
-    # Set default sort order
-    if order not in ["asc", "desc"]:
-        order = "asc"
+        # If no fields are selected for sorting, use title as default value
+        if sort not in allowed_sorts:
+            sort = "title"
 
-    # Append ORDER BY clause to query if any sort conditions exist
-    query += " ORDER BY " + sort + " " + order
+        # Set default sort order
+        if order not in ["asc", "desc"]:
+            order = "asc"
 
-    # Query the DB, fetch all matching records and return them
-    cur.execute(query, params)
-    movies = cur.fetchall()
-    con.close()
-    return movies
+        # Append ORDER BY clause to query if any sort conditions exist
+        query += " ORDER BY " + sort + " " + order
+
+        # Query the database, fetch all matching records and return them
+        cur.execute(query, params)
+        movies = cur.fetchall()
+        return movies
+
+    finally:
+        con.close()
 
 
 def get_genres():
@@ -188,35 +192,17 @@ def render_webpage(genre):
     )
 
 
-@app.route('/sort/<genre>')
-def render_sortpage(genre):
-    """
-    Sorts movies within a specific genre.
-    """
-
-    sort = request.args.get('sort', 'title')
-    order = request.args.get('order', 'asc')
-
-    movies = get_movies(
-        genre=genre,
-        sort=sort,
-        order=order
-    )
-
-    return render_template(
-        "movies.html",
-        movies=movies,
-        genres=get_genres(),
-        title=genre,
-        sort=sort,
-        order=order
-    )
-
-
 @app.route('/movie/<int:movie_id>')
 def movie_details(movie_id):
+    """
+    Displays the details of a selected movie.
+    """
+
+    # Connect to the database
     connection = create_connection(DATABASE)
     cursor = connection.cursor()
+
+    # Get the movie matching the ID from the URL
     cursor.execute("""
         SELECT 
             movie_id,
@@ -236,13 +222,17 @@ def movie_details(movie_id):
         WHERE movie_id =?
     """, (movie_id,))
 
+    # Get the movie from the query result
     movie = cursor.fetchone()
 
+    # Close the database connection
     connection.close()
 
+    # Show an error if the movie does not exist
     if movie is None:
         return "Movie not found.", 404
 
+    # Send the movie information to the template
     return render_template(
         'movie_details.html',
         movie=movie
@@ -252,12 +242,14 @@ def movie_details(movie_id):
 @app.route('/search')
 def render_search():
     """
-    Searches for movies across its title, genre, director, lead actor,
-    lead actress, and synopsis using the GET method.
+    Searches for movies across their title, genre, director, lead actor,
+    and lead actress using the GET method.
     """
+
+    # Get and clean the search term from the URL
     search = request.args.get('search', '').strip()
 
-    # If search box is empty
+    # If search box is empty, display no results
     if not search:
         return render_template(
             "movies.html",
@@ -269,9 +261,10 @@ def render_search():
             show_controls=False
         )
 
-    # Adding % around search term for LIKE
+    # Add % around search term so it can appear anywhere in the text
     search_value = "%" + search + "%"
-    
+
+    # Search for the term across movie fields
     query = """
         SELECT 
             m.movie_id,
@@ -295,25 +288,26 @@ def render_search():
             OR m.director LIKE ?
             OR m.lead_actor LIKE ?
             OR m.lead_actress LIKE ?
-            OR m.synopsis LIKE ?
         ORDER BY m.title ASC
     """
 
+    # Provide the search value for each LIKE condition
     params = (
         search_value,
         search_value,
         search_value,
         search_value,
         search_value,
-        search_value
     )
 
+    # Run the search query and get the matching movies 
     con = create_connection(DATABASE)
     cur = con.cursor()
     cur.execute(query, params)
     movies = cur.fetchall()
     con.close()
 
+    # Send the results to the template
     return render_template(
         "movies.html",
         movies=movies,
@@ -324,21 +318,28 @@ def render_search():
         show_controls=False
     )
 
+
 @app.route('/discover')
 def discover():
-    genre = request.args.get('genre', '')
-    release_year = request.args.get('release_year', '')
+    """
+    Displays movies that can be filtered and sorted by the user.
+    """
 
+    # Get the genre filter from the URL
+    genre = request.args.get('genre', '')
+
+    # Get the sorting values from the URL
     sort = request.args.get('sort', 'title')
     order = request.args.get('order', 'asc')
 
+    # Get the filtered and sorted movies
     movies = get_movies(
         genre=genre,
-        release_year=release_year,
         sort=sort,
         order=order
     )
 
+    # Send the movies and filter options to the template
     return render_template(
         'discover.html',
         movies=movies,
@@ -352,8 +353,15 @@ def discover():
 
 @app.route('/reviews')
 def reviews():
+    """
+    Displays movie reviews and IMDB ratings for each movie.
+    """
+
+    # Connect to the database
     connection = create_connection(DATABASE)
     cursor = connection.cursor()
+
+    # Get the review and movie information
     cursor.execute("""
         SELECT 
             mr.review_content,
@@ -366,21 +374,29 @@ def reviews():
                 ON m.movie_id = mr.movie_id
     """)
 
+    # Get all movie review results
     movies = cursor.fetchall()
 
+    # Close the database connection
     connection.close()
 
-    if movies is None:
-        return "Movie not found.", 404
-
+    # Send the review information to the template
     return render_template(
         'movie_reviews.html',
         movies=movies
     )
 
+
 @app.route('/about')
 def about():
+    """
+    Displays the 'About & ACTION' page
+    """
+
+    # Send the user to the About page
     return render_template('about.html')
 
+
 if __name__ == "__main__":
+    # Start the Flask application
     app.run()

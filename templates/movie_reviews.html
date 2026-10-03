@@ -2,32 +2,55 @@
 
 {% block main %}
 
+<!-- Movie Reviews Section -->
 <section>
+
+    <!-- Page Heading -->
     <div class="section-heading">
         <h2>MOVIE REVIEWS</h2>
     </div>
-    <!-- Movie Grid -->
+
+    <!-- Movie Reviews Grid -->
     <div class="movie-grid">
         {% for movie in movies %}
+
+        <!-- Movie Review Card -->
         <a href="/movie/{{ movie[3] }}" class="movie-card-link">
             <article class="movie-card">
+            
+                <!-- Movie Poster -->
                 <div class="movie-poster">
-                    <img src="/static/css/images/{{ movie[4] }}"/>
+                    <img 
+                        src="/static/css/images/{{ movie[4] }}"
+                        alt="{{ movie[2] }} Poster"
+                    >
                 </div>
-                <div class="movie-details-content">
+
+                <!-- Movie Review Information -->
+                <div class="movie-review-content">
+
+                    <!-- Movie Title -->
                     <h3>{{ movie[2] }}</h3>
+
+                    <!-- IMDB Rating -->
                     <p>&#11088;&nbsp;{{ movie[1] }}/10</p>
 
-                    <div class="movie-meta">
+                    <!-- Review -->
+                    <div class="movie-review-meta">
                         <p>{{ movie[0] }}</p>
                     </div>
+
                 </div>
             </article>
         </a>
+
         {% else %}
+        <!-- Message shown when there are no movies -->
             <p>No movies were found.</p>
         {% endfor %}
+
     </div>
+
 </section>
 
 {% endblock %}

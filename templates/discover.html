@@ -2,16 +2,19 @@
 
 {% block main %}
 
+<!-- Discover Page -->
 <section class="discover-page">
+
+    <!-- Page Heading-->
     <div class="section-heading">
         <h2>{{ title }}</h2>
     </div>
 
+
     <div class="discover-layout">
+
         <!-- Genre Sidebar -->
          <aside class="genre-sidebar">
-            <h3>ALL GENRES</h3>
-
             <a href="/discover">All Genres</a>
 
             {% for genre in genres %}
@@ -19,67 +22,125 @@
             {% endfor %}
         </aside>
 
+
         <!-- Main Discover Content -->
         <div class="discover-content">
-            <!-- Filters -->
+
+            <!-- Filters and Sort Controls -->
              <div class="discover-controls">
+
+                <!-- Display the currently selected genre -->
                 {% if request.args.get('genre') %}
-                    <b>{{ request.args.get('genre') }}</b>
+                    <p>{{ request.args.get('genre') }}</p>
                 {% else %}
-                    <b>ALL GENRES</b>
+                    <p>All Genres</p>
                 {% endif %}
-                <p> </p>
+
+               <!-- Sort Form -->
                 <form method="GET" action="/discover">
-                    <input type="hidden" name="genre" value="{{ request.args.get('genre', '') }}">
+
+                    <!-- Keep the selected genre when sorting -->
+                    <input 
+                        type="hidden"
+                        name="genre"
+                        value="{{ request.args.get('genre', '') }}"
+                    >
+
+                    <!-- Sort Options -->
                     <select name="sort">
-                        <option value="title"
-                        {% if request.args.get('sort') == 'title' %}
+
+                        <option 
+                            value="title"
+                            {% if request.args.get('sort') == 'title' %}
                                 selected
-                            {% endif %}>Sort By: Title</option>
-                        <option value="release_year"
-                        {% if request.args.get('sort') == 'release_year' %}
+                            {% endif %}
+                        >
+                            Sort By: Title
+                        </option>
+
+                        <option 
+                            value="release_year"
+                            {% if request.args.get('sort') == 'release_year' %}
                                 selected
-                            {% endif %}>Sort By: Year</option>
-                        <option value="duration_minutes"
-                        {% if request.args.get('sort') == 'duration_minutes' %}
+                            {% endif %}
+                        >
+                            Sort By: Year
+                        </option>
+
+                        <option
+                            value="duration_minutes"
+                            {% if request.args.get('sort') == 'duration_minutes' %}
                                 selected
-                            {% endif %}>Sort By: Duration</option>
+                            {% endif %}
+                        >
+                            Sort By: Duration
+                        </option>
+
                     </select>
 
+
+                    <!-- Sorting Order -->
                     <select name="order">
-                        <option value="asc"
-                        {% if request.args.get('order') == 'asc' %}
+
+                        <option 
+                            value="asc"
+                            {% if request.args.get('order') == 'asc' %}
                                 selected
-                            {% endif %}>Ascending</option>
-                        <option value="desc"
-                        {% if request.args.get('order') == 'desc' %}
+                            {% endif %}
+                        >
+                            Ascending
+                        </option>
+
+                        <option
+                            value="desc"
+                            {% if request.args.get('order') == 'desc' %}
                                 selected
-                            {% endif %}>Descending</option>
+                            {% endif %}
+                        >
+                            Descending
+                        </option>
+
                     </select>
 
                     <button type="submit">Apply</button>
+
                 </form>
              </div>
+
 
             <!-- Movie Grid -->
             <div class="movie-grid">
                 {% for movie in movies %}
+
+                <!-- Movie Card -->
                 <a href="/movie/{{ movie[0] }}" class="movie-card-link">
+
                     <article class="movie-card">
+
+                        <!-- Movie Poster -->
                         <div class="movie-poster">
-                            <img src="/static/css/images/{{ movie[11] }}"/>
+                            <img 
+                                src="/static/css/images/{{ movie[11] }}"
+                                alt="{{ movie[1] }} Poster"    
+                            >
                         </div>
-                        <div class="movie-details-content">
+
+                        <!-- Movie Information-->
+                        <div class="movie-card-content">
                             <h3>{{ movie[1] }}</h3>
 
                             <div class="movie-meta">
                                 <p>{{ movie[2] }}</p>
                                 <p>{{ movie[3] }}</p>
                                 <p>{{ movie[8] }}&nbsp;mins</p>
+                            </div>
                         </div>
+
                     </article>
                 </a>
+
                 {% else %}
+                <!-- Message shown when there are no matching movies -->
                     <p>No movies were found.</p>
                 {% endfor %}
             </div>

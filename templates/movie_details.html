@@ -2,36 +2,49 @@
 
 {% block main %}
 
+<!-- Movie Details Section -->
 <section class="movie-details">
 
+    <!-- Movie Poster -->
     <div class="movie-details-image">
-        <img src="/static/css/images/{{ movie[11] }}"/>
+        <img
+            src="/static/css/images/{{ movie[11] }}"
+            alt="{{ movie[1] }} Poster"
+        >
     </div>
 
+    <!-- Movie Information -->
     <div class="movie-details-content">
+
+        <!-- Movie Title -->
         <h1>{{ movie[1] }}</h1>
 
+        <!-- Movie Genre -->
         <div class="movie-genre">
             <p>{{ movie[2] }}</p>
         </div>
 
+        <!-- Movie Information -->
         <div class="movie-meta">
             <p>{{ movie[3] }}</p>
             <p>{{ movie[9] }}</p>
             <p>{{ movie[8] }} minutes</p>
         </div>
 
-        <h2>Synopsis</h2>
+        <!-- Movie Synopsis -->
+        <h2><u>Synopsis:</u></h2>
 
         <p>{{ movie[7] }}</p>
 
-        <h2>Details</h2>
-        <p><bold>Director:</bold> {{ movie[4] }}</p>
-        <p><bold>Producer:</bold> {{ movie[10] }}</p>
-        <p><bold>Lead Actor:</bold> {{ movie[5] }}</p>
-        <p><bold>Lead Actor:</bold> {{ movie[6] }}</p>
-        <p><bold>Cast:</bold> {{ movie[12] }}</p>
+        <!-- Movie Details -->
+        <h2><u>Details:</u></h2>
+        <p><strong>Director:</strong> {{ movie[4] }}</p>
+        <p><strong>Producer:</strong> {{ movie[10] }}</p>
+        <p><strong>Lead Actor:</strong> {{ movie[5] }}</p>
+        <p><strong>Lead Actor:</strong> {{ movie[6] }}</p>
+        <p><strong>Cast:</strong> {{ movie[12] }}</p>
     </div>
+
 </section>
 
 {% endblock %}

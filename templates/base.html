@@ -1,14 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>&</title>
+    <title>& ACTION</title>
+
+    <!-- Link to the website spreadsheet -->
     <link type="text/css" rel="stylesheet" href="/static/css/styles.css">
 </head>
+
 <body>
+    <!-- Website Header -->
     <header class="website-header">
+        <!-- Website Logo -->
         <a href="/" class="logo">& ACTION</a>
 
+        <!-- Main Navigation -->
         <nav class="main-nav">
             <a href="/">HOME</a>
             <a href="/discover">DISCOVER</a>
@@ -17,46 +24,73 @@
         </nav>
 
         
-    <!-- Search -->
-    <div class="nav-search">
-        <form method="get" action="/search" class="search-form">
-            <input type="text" name="search" placeholder="Search for a movie..." value="">
-            <input type="submit" value="Search">
-        </form>
-    </div>
+        <!-- Search Bar-->
+        <div class="nav-search">
+            <form method="get" action="/search" class="search-form">
+                <input 
+                    type="text"
+                    name="search"
+                    placeholder="Search for a movie..."
+                    value=""
+                >
+                <input type="submit" value="Search">
+            </form>
+        </div>
 
     </header>
 
+
+    <!-- Main Page Content-->
     <main>
         {% block main %}{% endblock %}
     </main>
 
+
+    <!-- Website Footer -->
     <footer class="site-footer">
+
+        <!-- Footer Brand-->
         <div class="footer-brand">
             <h2>& ACTION</h2>
-            <p>Find Your Next Film.</p>
+            <p><strong>Find Your Next Film.</strong></p>
             <p>&copy; Ria Mathew 2026</p>
         </div>
 
+
+        <!-- Credits -->
         <div class="footer-column">
             <h3>CREDITS</h3>
-            <a href="https://www.canva.com/">Graphics and logos using Canva</a>
-            <a href="https://www.themoviedb.org/">Movie posters - courtesy of TMDB</a>
-            <a href="https://www.imdb.com/">Movie ratings - courtesy of IMDB</a>
+
+            <a href="https://www.canva.com/">
+                Graphics and logos using Canva
+            </a>
+
+            <a href="https://www.themoviedb.org/">
+                Movie posters - courtesy of TMDB
+            </a>
+
+            <a href="https://www.imdb.com/">
+                Movie ratings - courtesy of IMDB
+            </a>
         </div>
 
-        <!--<div class="footer-column">
-            <h3>EXPLORE</h3>
-            <a href="/">Discover</a>
-            <a href="/#genres">Genres</a>
-            <a href="/#about">About</a>
-        </div>-->
 
+        <!-- TMDB and IMDB Attribution-->
         <div class="footer-column">
-            <img src="/static/css/images/tmdb_logo.png" alt="TMDB Logo" width="80">
-            <p>This website uses TMDB but is not endorsed, certified or otherwise approved by TMDB.</p>
-            <p>Movie ratings courtesy of IMDb. Used with permission. 
-</p>
+            <div class="attribution-container">
+
+                <img class="TMDB-logo"
+                    src="/static/css/images/tmdb_logo.png"
+                    alt="TMDB Logo"
+                    width="80"
+                >
+
+                <p>
+                    This website uses TMDB but is not endorsed, certified or otherwise approved by TMDB.<br>
+                    Movie ratings courtesy of IMDb. Used with permission.
+                </p>
+
+            </div>
         </div>
         
     </footer>

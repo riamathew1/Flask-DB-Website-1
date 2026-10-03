@@ -1,7 +1,7 @@
 /* Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
-/* Colours and Font*/
+/* Colours and Font */
 :root {
     --dusty-rose: #a96f68;
     --light-cream: #f1e4c3;
@@ -33,12 +33,8 @@ h2 {
     font-family: var(--subheader-font);
 }
 
-p {
-    font-family: var(--main-font);
-}
-
 a {
-    color: var(--brown);
+    color: var(--light-brown);
     text-decoration: none;
     font-family: var(--main-font);
 }
@@ -152,12 +148,12 @@ section {
 
 .section-heading h2 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 2.2rem;
     color: var(--light-cream);
 }
 
 .view-all {
-    font-size: 0.65rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--light-cream);
 }
@@ -182,15 +178,17 @@ section {
     max-width: 650px;
 }
 
-.hero-image img{
-    width: 100%;
-    object-fit: cover;
-    min-height: 270px;
+.hero-image {
     background-color: #d8ccb9;
     display: flex;
     align-items: center;
     justify-content: center;
+}
 
+.hero-image img{
+    width: 100%;
+    min-height: 270px;
+    object-fit: cover;
 }
 
 .hero-header {
@@ -202,7 +200,6 @@ section {
 }
 
 .hero-text {
-    font-family: var(--main-font);
     font-size: 20px;
 }
 
@@ -211,7 +208,7 @@ section {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 24px;
-    padding: 10px 0;
+    padding: 5px 0;
 }
 
 .movie-card {
@@ -231,8 +228,6 @@ section {
 
 .movie-poster {
     width: 100%;
-    height: auto;
-    transition: transform 0.4s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -245,28 +240,29 @@ section {
 }
 
 .movie-card-content {
-  padding: 12px;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-shrink: 0;
-  gap: 6px;
 }
 
 .movie-card-content h3 {
-  margin: 0;
-  font-size: 1rem;
-  font-family: var(--main-font, inherit);
+  margin-left: 12px;
+  margin-bottom: 0;
+  padding: 0;
+  font-size: 1.1rem;
+  font-family: var(--main-font);
   color: var(--dark-brown);
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
-.movie-subinfo {
-    display: inline-block;
-    white-space: nowrap;
-}
-
-.movie-subinfo span {
-    margin-right: 15px;
+.movie-meta {
+    display: flex;
+    gap: 20px;
+    margin-top: 0;
+    margin-left: 12px;
+    font-size: 1rem;
 }
 
 /* Movie Slider Wrapper */
@@ -282,10 +278,16 @@ section {
     overflow-x: auto;
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
-    padding: 10px 0;
     width: 100%;
-    padding: 10px 25px; 
+    padding: 10px 0px; 
     box-sizing: border-box;
+    /* Removed default scrollbar - Hides the native grey browser scrollbar shown in the image */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.movie-slider::-webkit-scrollbar {
+    display: none;
 }
 
 .movie-card-wrapper {
@@ -294,7 +296,6 @@ section {
     min-width: 200px;
     scroll-snap-align: start;
     scroll-snap-stop: always;
-    position: relative;
 }
 
 .movie-card-link {
@@ -304,12 +305,12 @@ section {
 }
 
 .slider-arrow {
-    display: none;
+    display: flex;
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    width: 38px;
-    height: 38px;
+    width: 50px;
+    height: 50px;
     background-color: var(--dark-brown);
     color: var(--light-cream);
     border-radius: 50%;
@@ -320,20 +321,14 @@ section {
 }
 
 .arrow-left {
-    left: -15px;
+    left: -19px;
+    
 }
 
 .arrow-right {
-    right: -15px;
+    right: -19px;
 }
 
-.movie-slider:not(:has(.movie-card-wrapper:target)) .movie-card-wrapper:first-child .slider-arrow {
-    display: flex;
-}
-
-.movie-card-wrapper:target .slider-arrow {
-    display: flex;
-}
 /* Genre Section */
 .genre-grid {
     display: flex;
@@ -344,7 +339,7 @@ section {
 
 
 .genre-card {
-    background-color: var(--light-cream--);
+    background-color: var(--dusty-rose);
     text-align: center;
     padding: 5px 5px;
     border-radius: 12px;
@@ -380,11 +375,47 @@ section {
     color: var(--dark-brown);
 }
 
+.finder-header {
+    font-size: 50px;
+    font-weight: 700;
+    margin-bottom: 0;
+    line-height: 1.1;
+}
+
+.finder-text {
+    font-size: 20px;
+    margin-top: 15px;
+}
+
+.finder-button {
+    font-family: var(--main-font);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid #f3e5ab;
+    border-radius: 4px;
+    background-color: var(--yellow);
+    color: var(--dark-brown);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.finder-button:hover {
+    background-color: var(--orange);
+    border-color: var(--yellow);
+    color: var(--light-cream);
+}
+
 .finder-image {
     background-color: #d8ccb9;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.finder-image img {
+    width: 100%;
+    height: auto;
 }
 
 /* Discover */
@@ -409,14 +440,11 @@ section {
     border-right: 1px solid #c7b68e;
 }
 
-.genre-sidebar h3 {
-    margin-top: 0;
-    font-size: 0.8rem;
-}
-
 .genre-sidebar a {
     padding: 7px 0;
-    font-size: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--dark-brown)
 }
 
 .genre-sidebar a:hover {
@@ -433,45 +461,80 @@ section {
     margin-bottom: 25px;
 }
 
+.discover-controls p {
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
 .discover-controls form {
     display: flex;
     gap: 10px;
 }
 
 .discover-controls select {
-    padding: 8px 12px;
-    border: 1px solid #c7b68e;
-    background-color: #fffaf0;
+    width: 200px;
+    height: 36px;
+    box-sizing: border-box;
+    padding: 0.2rem 0.6rem;
+    border: 2px solid var(--dark-brown);
+    border-radius: 4px;
+    background-color: var(--light-cream);
+    color: var(--dark-brown);
+    font-family: var(--main-font);
+    font-size: 1rem;
+    font-weight: 500;
+    outline: none;
 }
 
 .discover-controls button {
-    background-color: var(--yellow);
-    border: none;
-    font-weight: 700;
-    cursor: pointer;
-}
-
-/* Sorting */
-.sorting {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 25px;
-}
-
-.sorting h3 {
-    width: 100%;
-    margin-bottom: 5px;
-}
-
-.sorting a {
-    padding: 8px 12px;
-    border: 1px solid var(--muted-brown);
+    font-family: var(--main-font);
+    font-size: 0.85rem;
     font-weight: 600;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid #f3e5ab;
+    border-radius: 4px;
+    background-color: var(--yellow);
+    color: var(--dark-brown);
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.sorting a:hover {
-    background-color: var(--yellow);
+.discover-controls button:hover {
+    background-color: var(--orange);
+    border-color: var(--yellow);
+    color: var(--light-cream);
+}
+
+/* Movie Review */
+.movie-review-content {
+    max-width: 700px;
+    font-size: 1.3rem;
+    padding: 0 0 0 10px;
+}
+
+.movie-review-content h3 {
+    margin-top: 15px;
+    margin-bottom: 0;
+    font-size: 1.2rem;
+}
+
+.movie-review-content p {
+   margin-top: 0; 
+   font-size: 1.2rem;
+}
+
+.movie-review-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 0;
+    font-size: 1.2rem;
+    
+    /* Vertical scroll properties */
+    max-height: 80px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 /* Movie Details */
@@ -484,26 +547,28 @@ section {
 }
 
 .movie-details-image {
-    background-color: #d8ccb9;
+    background-color: var(--light-cream);
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.movie-details-image img {
+    width: 100%;
+    height: auto;
+}
+
 .movie-details-content {
-    max-width: 700px;
+    padding: 10px;
+}
+
+.movie-details-content h2 {
+    font-size: 2rem;
 }
 
 .movie-genre {
     color: var(--orange);
-    font-weight: 700px;
-}
-
-.movie-meta {
-    display: flex;
-    gap: 20px;
-    margin: 20px 0;
-    padding: 10px;
+    font-weight: 700;
 }
 
 .movie-details-content h2 {
@@ -512,17 +577,24 @@ section {
 }
 
 /* About Hero */
+.about-hero-content {
+    text-align: center;
+    padding: 30px 20px;
+}
+
 .about-hero-content h1 {
-    font-family: var(--header-font);
     font-size: 60px;
     color: var(--light-cream);
-    margin: 0;
+    margin-top: 0;
+    margin-bottom: 8px;
 }
 
 .about-hero-content p {
     font-family: var(--main-font);
-    font-size: 16px;
+    font-size: 24px;
     color: var(--light-cream);
+    margin-top: 0;
+    margin-bottom: 0;
 }
 
 /* Our Story */
@@ -531,7 +603,7 @@ section {
     align-items: stretch;
     gap: 0px;
     padding: 0px;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     background-color: var(--light-cream);
 }
 
@@ -540,17 +612,18 @@ section {
     width: 700px;
     padding: 50px 20px;
     margin-left: 30px;
+    font-size: 20px;
 }
 
 .story-text h2 {
     font-family: var(--header-font);
     color: var(--dark-brown);
     font-size: 40px;
+    font-weight: 1000;
     margin-bottom: 20px;
 }
 
 .story-text p {
-    font-family: var(--main-font);
     color: var(--dark-brown);
     line-height: 1.7;
     margin-bottom: 15px;
@@ -576,6 +649,8 @@ section {
     justify-content: space-between;
     padding: 50px 5%;
     background-color: var(--light-cream);
+    margin-top: 5px;
+    border-top: 32px solid var(--dusty-rose);
 }
 
 .about-feature {
@@ -596,20 +671,31 @@ section {
 }
 
 .about-feature p {
-    font-family: var(--main-font);
-    color: var(--dark-brown);
     line-height: 1.7;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 /* Footer */
 .site-footer {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr;
     gap: 40px;
     padding: 45px 5%;
     background-color: var(--dark-brown);
     color: var(--light-cream);
+}
+
+.footer-brand h2 {
+    margin-top: 20px;
+    margin-bottom: 0;
+    font-family: var(--header-font);
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.footer-brand p {
+    margin-top: 0;
+    font-size: 1.5rem;
 }
 
 .footer-column {
@@ -621,4 +707,23 @@ section {
 
 .footer-column a:hover {
     color: var(--yellow);
+}
+
+.footer-column h3 {
+    margin-top: 2.1rem;
+    margin-bottom: 0;
+}
+
+.attribution-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-top: 2.4rem;
+}
+
+.TMDB-logo {
+    flex-shrink: 0;
+    height: auto;
+    margin-top: 1.9rem;
+    padding: 10px;
 }

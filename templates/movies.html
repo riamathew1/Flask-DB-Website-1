@@ -2,57 +2,31 @@
 
 {% block main %}
 
+<!-- Movie Search Page -->
 <section>
+
+    <!-- Page Heading -->
     <div class="section-heading">
         <h2>{{ title }}</h2>
     </div>
 
-
-    <!-- Filter and Sort Controls -->
-     {% if show_controls %}    
-    <div class="movie-controls">
-
-        <form method="GET" action="/discover" class="filter-form">
-            <select name="genre">
-                <option value="">All Genres</option>
-                {% for genre in genres %}
-                <option value="{{ genre }}">{{ genre }}</option>
-                {% endfor %}
-            </select>
-
-            <select name="release_year">
-                <option value="">All Years</option>
-                {% for year in years %}
-                <option value="{{ year }}">{{ year }}</option>
-                {% endfor %}
-            </select>
-
-            <select name="age_rating">
-                <option value="">All Age Ratings</option>
-                {% for rating in age_ratings %}
-                <option value="{{ rating }}">{{ rating }}</option>
-                {% endfor %}
-            </select>
-
-            <!-- Filter Button -->
-             <input type="submit" value="Filter">
-
-        </form>
-    </div>
-
-    {% endif %}
-
-    <!-- Movies -->
+    <!-- Movie Grid -->
     <div class="movie-grid">
         {% for movie in movies %}
 
+        <!-- Movie Card -->
         <a href="/movie/{{ movie[0] }}" class="movie-card-link">
             <article class="movie-card">
 
+                <!-- Movie Poster -->
                 <div class="movie-poster">
-                    <img src="/static/css/images/{{ movie[11] }}" alt="{{ movie[1] }} Poster"/>
+                    <img 
+                        src="/static/css/images/{{ movie[11] }}"
+                        alt="{{ movie[1] }} Poster"
+                    >
                 </div>
 
+                <!-- Movie Information -->
                 <div class="movie-card-content">
                     <h3>{{movie[1] }}</h3>
 
@@ -69,11 +43,12 @@
         </a>
 
         {% else %}
-
-        <p>No movies were found.</p>
-
+            <!-- Message shown when there are no matching movies -->
+            <p>No movies were found.</p>
         {% endfor %}
+
     </div>
+
 </section>
 
 {% endblock %}

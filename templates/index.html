@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block main %}
+
 <!-- Featured Banner -->
 <section class="hero">
+
+        <!-- Hero Text -->
         <div class="hero-content">
                 <h2 class="hero-header">
                         Find Your<br>
@@ -14,36 +17,62 @@
                 </p>
         </div>
 
+        <!-- Hero Image -->
         <div class="hero-image">
-                <img src="/static/css/images/hero_image.png"/>
+                <img 
+                        src="/static/css/images/hero_image.png"
+                        alt="Movie film reels"
+                >
         </div>
+
 </section>
 
-<!-- Recommended -->
+
+<!-- Recommended Movies -->
 <section id="discover">
 
+        <!-- Section Heading -->
         <div class="section-heading">
                 <h2>Recommended for You</h2>
                 <a href="/discover" class="view-all">VIEW ALL</a>
         </div>
 
+        <!-- Movie Slider -->
         <div class="slider-wrapper">
-                <button class="slider-arrow arrow-left" aria-label="Previous">&lt;</button>
-                <button class="slider-arrow arrow-right" aria-label="Next">&gt;</button>
+
+                <!-- Slider Navigation Buttons -->
+                <!-- Left Arrow -->
+                <a 
+                        href="#card-0"
+                        class="slider-arrow arrow-left"
+                        aria-label="Previous">
+                        &lt;
+                </a>
+
                 <!-- Horizontal Slider Container -->
                 <div class="movie-slider">
-                        {% for movie in movies[:10] %}
+                        {% for movie in movies[:8] %}
+
+                        <!-- Movie Card-->
                         <div class="movie-card-wrapper" id="card-{{ loop.index0 }}">
+
                                 <a href="/movie/{{ movie[0] }}" class="movie-card-link">
                                         <article class="movie-card">
+
+                                                <!-- Movie Poster -->
                                                 <div class="movie-poster">
-                                                        <img src="/static/css/images/{{ movie[11] }}" alt="{{ movie[1] }} poster">
+                                                        <img 
+                                                                src="/static/css/images/{{ movie[11] }}"
+                                                                alt="{{ movie[1] }} Poster"
+                                                        >
                                                 </div>
 
+                                                <!-- Movie Title -->
                                                 <div class="movie-card-content">
                                                         <h3>{{ movie[1] }}</h3>
                                                 </div>
 
+                                                <!-- Movie Genre and Rating -->
                                                 <div class="movie-meta">
                                                         <p>{{ movie[2] }}</p>
                                                         <p>&#11088;&nbsp;{{ movie[13] }}/10</p>
@@ -54,21 +83,40 @@
                         </div>
                         {% endfor %}
                 </div>
+
+                <!-- Right Arrow -->
+                <a 
+                        href="#card-7"
+                        class="slider-arrow arrow-right"
+                        aria-label="Next">
+                        &gt;
+                </a>
         </div>
 </section>
 
-<!-- Genres -->
+
+<!-- Browse By Genre -->
 <section id="genres">
+
+        <!-- Section Heading -->
         <div class="section-heading">
                 <h2>Browse by Genre</h2>
         </div>
 
+        <!-- Genre Grid -->
         <div class="genre-grid">
                 {% for genre in genres %}
+
+                <!-- Genre Card -->
                 <div class="genre-item">
                         <a href="/discover?genre={{ genre }}" class="genre-card">
+
+                                <!-- Genre Image -->
                                 <div class="genre-icon">
-                                        <img src="/static/css/images/{{ genre }}.png"/>
+                                        <img 
+                                                src="/static/css/images/{{ genre }}.png"
+                                                alt="{{ genre }}"
+                                        >
                                 </div>
                         </a>
                 </div>
@@ -76,20 +124,31 @@
         </div>
 </section>
 
+
 <!-- Movie Finder -->
 <section class="movie-finder">
+
+        <!-- Movie Finder Image -->
         <div class="finder-image">
-                <img src="/static/css/images/movie_finder.png">
+                <img 
+                        src="/static/css/images/movie_finder.png"
+                        alt="Movie Finder"
+                >
         </div>
 
+        <!-- Movie Finder Text-->
         <div>
-                <h2>CAN'T DECIDE<br>WHAT TO WATCH?</h2>
-                <p>
+                <h2 class="finder-header">CAN'T DECIDE<br>WHAT TO WATCH?</h2>
+
+                <p class="finder-text">
                         Browse our collection to find a film to match your mood.
                 </p>
 
-                <a href="/discover" class="hero-button">FIND YOUR NEXT FILM.</a>
+                <a href="/discover" class="finder-button">
+                        FIND YOUR NEXT FILM.
+                </a>
         </div>
+
 </section>
 
 {% endblock %}
