@@ -14,3 +14,9 @@ https://github.com/riamathew1/Flask-DB-Website-1
 - SQLite
 - HTML
 - CSS
+
+### Running The Application:
+Normal Mode:
+`python -m flask run`
+Debug Mode:
+`python -m flask run --debug`
