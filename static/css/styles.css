@@ -34,7 +34,7 @@ h2 {
 }
 
 a {
-    color: var(--light-brown);
+    color: var(--light-cream);
     text-decoration: none;
     font-family: var(--main-font);
 }
@@ -105,12 +105,13 @@ a {
     width: 180px;
 }
 
-.nav-search input:focus {
+.nav-search input:focus
+.nav-search button:focus {
     outline: none;
-    border-color: var(--yellow)
+    border-color: var(--yellow);
 }
 
-.nav-search input[type="submit"] {
+.nav-search button[type="submit"] {
     font-family: var(--main-font);
     font-size: 0.85rem;
     font-weight: 600;
@@ -123,7 +124,7 @@ a {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.nav-search input[type="submit"]:hover {
+.nav-search button[type="submit"]:hover {
     background-color: var(--orange);
     border-color: var(--yellow);
     color: var(--light-cream);
@@ -196,7 +197,7 @@ section {
     align-items: center;
     font-size: 6.2rem;
     line-height: 1;
-    margin: 0px 0px 1px 0px; 
+    margin: 0 0 1px 0; 
 }
 
 .hero-text {
@@ -279,7 +280,7 @@ section {
     scroll-behavior: smooth;
     scroll-snap-type: x mandatory;
     width: 100%;
-    padding: 10px 0px; 
+    padding: 10px 0; 
     box-sizing: border-box;
     /* Removed default scrollbar - Hides the native grey browser scrollbar shown in the image */
     -ms-overflow-style: none;
@@ -444,7 +445,7 @@ section {
     padding: 7px 0;
     font-size: 1.1rem;
     font-weight: 700;
-    color: var(--dark-brown)
+    color: var(--dark-brown);
 }
 
 .genre-sidebar a:hover {
@@ -562,10 +563,6 @@ section {
     padding: 10px;
 }
 
-.movie-details-content h2 {
-    font-size: 2rem;
-}
-
 .movie-genre {
     color: var(--orange);
     font-weight: 700;
@@ -601,8 +598,8 @@ section {
 .our-story {
     display: flex;
     align-items: stretch;
-    gap: 0px;
-    padding: 0px;
+    gap: 0;
+    padding: 0;
     margin-bottom: 1rem;
     background-color: var(--light-cream);
 }
@@ -619,7 +616,7 @@ section {
     font-family: var(--header-font);
     color: var(--dark-brown);
     font-size: 40px;
-    font-weight: 1000;
+    font-weight: 900;
     margin-bottom: 20px;
 }
 
