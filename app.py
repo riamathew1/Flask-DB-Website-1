@@ -1,10 +1,13 @@
-# Controller App Script for & ACTION movie website using Flask and Python
-# This also handles all the routing for all the URLs to this website.
+"""
+& ACTION is a web app for searching and browsing movies.
+
+It uses Flask and SQLite to display movie details and reviews.
+"""
 # Author: Ria Mathew
 # Date: September 2026
 
-from flask import Flask, render_template, request # type: ignore
-# Imports SQLite library to handle the database queries 
+from flask import Flask, render_template, request
+# Imports SQLite library to handle the database queries
 import sqlite3
 from sqlite3 import Error
 
@@ -16,8 +19,9 @@ DATABASE = "website_movies.db"
 
 def create_connection(db_file):
     """
-    Creates a connection to the database.
-    Logs errors if the connection fails.
+    Create a connection to the database.
+
+    Log errors if the connection fails.
     """
     try:
         connection = sqlite3.connect(db_file)
@@ -29,9 +33,7 @@ def create_connection(db_file):
 
 
 def get_movies(genre=None, release_year=None, sort="title", order="asc"):
-    """
-    Retrieves movies from the database based on optional filters and sorting.
-    """
+    """Retrieve movies from the database based on filters and sorting."""
     con = create_connection(DATABASE)
 
     try:
@@ -39,7 +41,7 @@ def get_movies(genre=None, release_year=None, sort="title", order="asc"):
 
         # Base SQL query selecting all necessary movie features
         query = """
-            SELECT 
+            SELECT
                 m.movie_id,
                 m.title,
                 m.genre,
@@ -55,7 +57,7 @@ def get_movies(genre=None, release_year=None, sort="title", order="asc"):
                 m.display_priority,
                 mr.imdb_rating
             FROM movies m
-            LEFT JOIN movie_reviews mr 
+            LEFT JOIN movie_reviews mr
                 ON m.movie_id = mr.movie_id
         """
 
@@ -107,9 +109,7 @@ def get_movies(genre=None, release_year=None, sort="title", order="asc"):
 
 
 def get_genres():
-    """
-    Gets all the unique genres from the movies table.
-    """
+    """Get all the unique genres from the movies table."""
     con = create_connection(DATABASE)
     cur = con.cursor()
     query = """
@@ -129,15 +129,15 @@ def get_genres():
 @app.route('/')
 def render_home():
     """
-    Displays the home page where user can filter movies by genre, release year and age rating.
+    Display the home page where user gets an introduction to the website.
+
     The user can also sort the results.
     """
-
     # Get filter values from the URL
     genre = request.args.get('genre', '')
     release_year = request.args.get('release_year', '')
 
-    # Get sorting values from the URL 
+    # Get sorting values from the URL
     sort = request.args.get('sort', 'display_priority')
     order = request.args.get('order', 'asc')
 
@@ -155,7 +155,7 @@ def render_home():
     # Return the data to the homepage
     return render_template(
         "index.html",
-        movies=movies, 
+        movies=movies,
         genres=genres,
         sort=sort,
         order=order,
@@ -165,10 +165,7 @@ def render_home():
 
 @app.route('/genre/<genre>')
 def render_webpage(genre):
-    """
-    Displays movies a part of the same genre.
-    """
-
+    """Display movies a part of the same genre."""
     # Get sorting values from URL
     sort = request.args.get('sort', 'title')
     order = request.args.get('order', 'asc')
@@ -194,17 +191,14 @@ def render_webpage(genre):
 
 @app.route('/movie/<int:movie_id>')
 def movie_details(movie_id):
-    """
-    Displays the details of a selected movie.
-    """
-
+    """Display the details of a selected movie."""
     # Connect to the database
     connection = create_connection(DATABASE)
     cursor = connection.cursor()
 
     # Get the movie matching the ID from the URL
     cursor.execute("""
-        SELECT 
+        SELECT
             movie_id,
             title,
             genre,
@@ -241,11 +235,7 @@ def movie_details(movie_id):
 
 @app.route('/search')
 def render_search():
-    """
-    Searches for movies across their title, genre, director, lead actor,
-    and lead actress using the GET method.
-    """
-
+    """Search for movies across different areas using the GET method."""
     # Get and clean the search term from the URL
     search = request.args.get('search', '').strip()
 
@@ -266,24 +256,24 @@ def render_search():
 
     # Search for the term across movie fields
     query = """
-        SELECT 
+        SELECT
             m.movie_id,
             m.title,
-            m.genre, 
+            m.genre,
             m.release_year,
-            m.director, 
-            m.lead_actor, 
-            m.lead_actress, 
+            m.director,
+            m.lead_actor,
+            m.lead_actress,
             m.synopsis,
-            m.duration_minutes, 
-            m.age_rating, 
-            m.producer, 
+            m.duration_minutes,
+            m.age_rating,
+            m.producer,
             m.poster_image,
             mr.imdb_rating
         FROM movies m
         LEFT JOIN movie_reviews mr
             ON m.movie_id = mr.movie_id
-        WHERE m.title LIKE ? 
+        WHERE m.title LIKE ?
             OR m.genre LIKE ?
             OR m.director LIKE ?
             OR m.lead_actor LIKE ?
@@ -300,7 +290,7 @@ def render_search():
         search_value,
     )
 
-    # Run the search query and get the matching movies 
+    # Run the search query and get the matching movies
     con = create_connection(DATABASE)
     cur = con.cursor()
     cur.execute(query, params)
@@ -312,7 +302,7 @@ def render_search():
         "movies.html",
         movies=movies,
         genres=get_genres(),
-        title = "Search results for: " + search,
+        title="Search results for: " + search,
         sort="title",
         order="asc",
         show_controls=False
@@ -321,10 +311,7 @@ def render_search():
 
 @app.route('/discover')
 def discover():
-    """
-    Displays movies that can be filtered and sorted by the user.
-    """
-
+    """Display movies that can be filtered and sorted by the user."""
     # Get the genre filter from the URL
     genre = request.args.get('genre', '')
 
@@ -353,24 +340,21 @@ def discover():
 
 @app.route('/reviews')
 def reviews():
-    """
-    Displays movie reviews and IMDB ratings for each movie.
-    """
-
+    """Display movie reviews and IMDB ratings for each movie."""
     # Connect to the database
     connection = create_connection(DATABASE)
     cursor = connection.cursor()
 
     # Get the review and movie information
     cursor.execute("""
-        SELECT 
+        SELECT
             mr.review_content,
             mr.imdb_rating,
             m.title,
             m.movie_id,
             m.poster_image
             FROM movies m
-            LEFT JOIN movie_reviews mr 
+            LEFT JOIN movie_reviews mr
                 ON m.movie_id = mr.movie_id
     """)
 
@@ -389,10 +373,7 @@ def reviews():
 
 @app.route('/about')
 def about():
-    """
-    Displays the 'About & ACTION' page
-    """
-
+    """Display the 'About & ACTION' page."""
     # Send the user to the About page
     return render_template('about.html')
 
